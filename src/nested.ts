@@ -1,12 +1,13 @@
 import { Answer } from "./interfaces/answer";
 import { Question, QuestionType } from "./interfaces/question";
+import { makeBlankQuestion } from "./objects";
 
 /**
  * Consumes an array of questions and returns a new array with only the questions
  * that are `published`.
  */
 export function getPublishedQuestions(questions: Question[]): Question[] {
-    return [];
+    return questions.filter((question: Question) => question.published);
 }
 
 /**
@@ -15,7 +16,8 @@ export function getPublishedQuestions(questions: Question[]): Question[] {
  * `expected`, and an empty array for its `options`.
  */
 export function getNonEmptyQuestions(questions: Question[]): Question[] {
-    return [];
+    return questions.filter((question: Question) => question.body != "" || question.expected !== "" || question.options.length >0)
+   
 }
 
 /***
@@ -26,7 +28,8 @@ export function findQuestion(
     questions: Question[],
     id: number
 ): Question | null {
-    return null;
+    const found = questions.find((question: Question) => question.id === id);
+    return found ?? null;
 }
 
 /**
@@ -35,7 +38,7 @@ export function findQuestion(
  * Hint: use filter
  */
 export function removeQuestion(questions: Question[], id: number): Question[] {
-    return [];
+    return questions.filter((question: Question) => question.id !== id);
 }
 
 /***
@@ -44,7 +47,7 @@ export function removeQuestion(questions: Question[], id: number): Question[] {
  * Do not modify the input array.
  */
 export function getNames(questions: Question[]): string[] {
-    return [];
+    return questions.map((question: Question) => question.name)
 }
 
 /**
@@ -53,7 +56,13 @@ export function getNames(questions: Question[]): string[] {
  * making the `text` an empty string, and using false for both `submitted` and `correct`.
  */
 export function makeAnswers(questions: Question[]): Answer[] {
-    return [];
+    return questions.map((question: Question)=>({
+        questionId: question.id,
+        text: "",
+        submitted: false,
+        correct: false
+
+    }));
 }
 
 /***
@@ -62,7 +71,10 @@ export function makeAnswers(questions: Question[]): Answer[] {
  * Hint: as usual, do not modify the input questions array
  */
 export function publishAll(questions: Question[]): Question[] {
-    return [];
+    return questions.map((question: Question) => ({
+        ...question,
+        published: true
+    }));
 }
 
 /***
@@ -77,7 +89,10 @@ export function addNewQuestion(
     name: string,
     type: QuestionType
 ): Question[] {
-    return [];
+    return [
+        ...questions, // all existing questions
+        makeBlankQuestion(id, name, type) // new blank question at the end
+    ];
 }
 
 /***
@@ -92,7 +107,15 @@ export function renameQuestionById(
     targetId: number,
     newName: string
 ): Question[] {
-    return [];
+    return questions.map((question: Question) => {
+        if (question.id === targetId) {
+            // return a copy of the question with the new name
+            return { ...question, name: newName };
+        } else {
+            // return the question unchanged
+            return question;
+        }
+    });
 }
 
 /**
@@ -113,5 +136,24 @@ export function editOption(
     targetOptionIndex: number,
     newOption: string
 ): Question[] {
-    return [];
+    return questions.map((question: Question) => {
+        if (question.id !== targetId) {
+            return question; // unchanged
+        }
+
+        // make a new options array
+        let newOptions: string[];
+        if (targetOptionIndex === -1) {
+            // add to end
+            newOptions = [...question.options, newOption];
+        } else {
+            // replace existing option
+            newOptions = question.options.map((opt, index) =>
+                index === targetOptionIndex ? newOption : opt
+            );
+        }
+
+        // return a new question object with updated options
+        return { ...question, options: newOptions };
+    });
 }
