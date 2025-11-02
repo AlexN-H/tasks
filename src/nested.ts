@@ -136,7 +136,6 @@ export function editOption(
     targetOptionIndex: number,
     newOption: string,
 ): Question[] {
-<<<<<<< HEAD
     return questions.map((question: Question) => {
         if (question.id !== targetId) {
             return question; // unchanged
@@ -157,7 +156,4 @@ export function editOption(
         // return a new question object with updated options
         return { ...question, options: newOptions };
     });
-=======
-    return [];
->>>>>>> upstream/task-state
 }
