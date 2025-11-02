@@ -5,28 +5,30 @@ import { ChangeType } from "./components/ChangeType";
 import { RevealAnswer } from "./components/RevealAnswer";
 import { TwoDice } from "./components/TwoDice";
 import { Counter } from "./components/Counter";
+import { DoubleHalf } from "./bad-components/DoubleHalf";
+import { ColoredBox } from "./bad-components/ColoredBox";
+import { ChooseTeam } from "./bad-components/ChooseTeam";
 
 function App(): React.JSX.Element {
     return (
         <div className="App">
-            <Container>
-                <Row>
-                    <Col>
-                        <h1>This is The Heading</h1>
-                        <header className="App-header">
-                            UM COS420 with React Hooks and TypeScript
-                        </header>
-                        <hr />
-                        <Counter />
-                        <hr />
-                        <RevealAnswer />
-                        <hr />
-                        <TwoDice />
-                        <hr />
-                        <ChangeType />
-                    </Col>
-                </Row>
-            </Container>
+            <header className="App-header">
+                UM COS420 with React Hooks and TypeScript
+            </header>
+            <hr></hr>
+            {/* <DoubleHalf></DoubleHalf> */}
+            <hr></hr>
+            <ChooseTeam></ChooseTeam>
+            <hr></hr>
+            <ColoredBox></ColoredBox>
+            <hr></hr>
+            <Counter></Counter>
+            <hr />
+            <RevealAnswer></RevealAnswer>
+            <hr />
+            <TwoDice></TwoDice>
+            <hr />
+            <ChangeType></ChangeType>
         </div>
     );
 }
